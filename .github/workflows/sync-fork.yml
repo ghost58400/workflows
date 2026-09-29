@@ -20,3 +20,5 @@ jobs:
           git fetch "https://github.com/${PARENT}.git" "$BRANCH"
           git merge FETCH_HEAD --no-edit
           git push
+
+# Alternative : https://github.com/wei/pull
