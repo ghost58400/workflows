@@ -15,8 +15,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          PARENT=$(gh repo view --json parent -q .parent.nameWithOwner)
-          BRANCH=$(gh repo view "$PARENT" --json defaultBranchRef -q .defaultBranchRef.name)
+          PARENT=$(gh api "repos/${{ github.repository }}" --jq .parent.full_name)
+          BRANCH=$(gh api "repos/${PARENT}" --jq .default_branch)
           git fetch "https://github.com/${PARENT}.git" "$BRANCH"
           git merge FETCH_HEAD --no-edit
           git push
