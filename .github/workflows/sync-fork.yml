@@ -1,0 +1,22 @@
+on:
+  workflow_call:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Merge parent into this branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          PARENT=$(gh repo view --json parent -q .parent.nameWithOwner)
+          BRANCH=$(gh repo view "$PARENT" --json defaultBranchRef -q .defaultBranchRef.name)
+          git fetch "https://github.com/${PARENT}.git" "$BRANCH"
+          git merge FETCH_HEAD --no-edit
+          git push
