@@ -17,8 +17,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           PARENT=$(gh api "repos/${{ github.repository }}" --jq .parent.full_name)
           BRANCH=$(gh api "repos/${PARENT}" --jq .default_branch)
-          git fetch "https://github.com/${PARENT}.git" "refs/heads/${BRANCH}:refs/remotes/upstream/${BRANCH}"
-          git merge "refs/remotes/upstream/${BRANCH}" --no-edit
+          git fetch "https://github.com/${PARENT}.git" "refs/heads/${BRANCH}"
+          git merge FETCH_HEAD --no-edit
           git push
 
 # Alternative : https://github.com/wei/pull
